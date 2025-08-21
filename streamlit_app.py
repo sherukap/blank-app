@@ -18,3 +18,15 @@ def create_session():
 
 session = create_session()
 root = Root(session)
+
+query = st.text_input("Ask me something:")
+
+if st.button("Search") and query:
+    try:
+        # Replace with your Cortex search service name
+        search_service = root.search("FOMC_MEETING")
+        response = search_service.complete(query)
+        st.success("Answer:")
+        st.write(response)
+    except Exception as e:
+        st.error(f"Error: {e}")
