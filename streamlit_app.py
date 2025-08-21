@@ -3,9 +3,6 @@ import os
 from snowflake.snowpark import Session
 from snowflake.cortex import Root
 
-# ----------------------------
-# 🔑 Build Snowpark session from secrets
-# ----------------------------
 @st.cache_resource
 def create_session():
     connection_parameters = {
@@ -21,20 +18,3 @@ def create_session():
 
 session = create_session()
 root = Root(session)
-
-# ----------------------------
-# 🖥️ Streamlit UI
-# ----------------------------
-st.set_page_config(page_title="Cortex Search App", layout="centered")
-st.title("🔎 Cortex Search App")
-
-query = st.text_input("Ask me something:")
-
-if st.button("Search") and query:
-    try:
-        search_service = root.search("FOMC_MEETING")  # replace with your Cortex search service name
-        response = search_service.complete(query)
-        st.success("Answer:")
-        st.write(response)
-    except Exception as e:
-        st.error(f"Error: {e}")
